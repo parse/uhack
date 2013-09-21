@@ -13,6 +13,7 @@
 @interface ViewController : UIViewController
 
 @property (nonatomic, retain) IBOutlet FUIButton *submitButton;
-@property (nonatomic, retain) IBOutlet UITextView *
+@property (nonatomic, retain) IBOutlet UITextView *fromTextView;
+@property (nonatomic, retain) IBOutlet UITextView *toTextView;
 
 @end

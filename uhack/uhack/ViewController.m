@@ -22,16 +22,18 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-    
-    
+	// Do any additional setup after loading the view, typically from a nib.
+    [self initSubmitButton];
+}
+
+- (void)initSubmitButton
+{
     self.submitButton.buttonColor = [UIColor turquoiseColor];
     self.submitButton.shadowColor = [UIColor greenSeaColor];
     self.submitButton.shadowHeight = 3.0f;
     self.submitButton.cornerRadius = 0.0f;
-    self.submitButton.titleLabel.font = [UIFont boldFlatFontOfSize:16];
     [self.submitButton setTitleColor:[UIColor cloudsColor] forState:UIControlStateNormal];
     [self.submitButton setTitleColor:[UIColor cloudsColor] forState:UIControlStateHighlighted];
-	// Do any additional setup after loading the view, typically from a nib.
 }
 
 /*
