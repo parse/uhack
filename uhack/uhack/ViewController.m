@@ -26,11 +26,6 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-	
-    [self initTapRecognizers];
-    [self initSubmitButton];
-    [self initTextFields];
-    [self initTableView];
     
     [self loadResults];
 
@@ -41,17 +36,23 @@
 {
     self.searchResults.layer.borderWidth = 1.0;
     self.searchResults.layer.borderColor = [[UIColor colorWithWhite:.5 alpha:.5] CGColor];
-    
-    debugLog(@"Height: %f", self.searchResults.frame.size.height);
-    
+}
+
+- (CGFloat)getTableViewHeight
+{
     CGFloat height = self.searchResults.rowHeight;
     height *= 3;
-    height += 100;
-    
-    CGRect tableFrame = self.searchResults.frame;
-    tableFrame.size.height = height;
-    self.searchResults.frame = tableFrame;
-    debugLog(@"Height: %f, %f", height, self.searchResults.frame.size.height);
+    return height;
+}
+
+- (void)viewDidAppear:(BOOL)animated
+{
+    [super viewDidAppear:YES];
+	
+    [self initTapRecognizers];
+    [self initSubmitButton];
+    [self initTextFields];
+    [self initTableView];
 }
 
 - (void)initTextFields
@@ -109,7 +110,6 @@
 
 - (void)textFieldDidBeginEditing:(UITextField *)textField
 {
-    debugLog(@"Height: %f", self.searchResults.frame.size.height);
     [UIView animateWithDuration:0.3 animations:^{
         CGRect logoFrame = self.logoView.frame;
         self.logoView.frame = CGRectify(logoFrame, -1, logoFrame.origin.y - 100, -1, -1);
@@ -134,15 +134,19 @@
         
         int y = 0;
         if (textField == self.toTextView)
-            y = self.toTextView.frame.origin.y + 30;
+            y = self.toTextView.frame.origin.y + 40;
         else if (textField == self.fromTextView)
-            y = self.fromTextView.frame.origin.y + 30;
+            y = self.fromTextView.frame.origin.y + 40;
         CGRect searchFrame = self.searchResults.frame;
         
-        self.searchResults.frame = CGRectify(searchFrame, -1, y, -1, -1);
+        self.searchResults.frame = CGRectify(searchFrame, -1, y, -1, 0);
+        [self.searchResults setNeedsDisplay];
         
         [UIView animateWithDuration:0.4 animations:^{
             self.searchResults.alpha = 1;
+            
+            CGFloat height = [self getTableViewHeight];
+            self.searchResults.frame = CGRectify(searchFrame, -1, y, -1, height);
         }];
     }];
 }
