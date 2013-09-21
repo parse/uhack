@@ -18,6 +18,7 @@
 @property (nonatomic, retain) IBOutlet UITextField *toTextView;
 @property (nonatomic, retain) IBOutlet UITableView *searchResults;
 @property (nonatomic, retain) IBOutlet UIView *logoView;
+@property (nonatomic, retain) IBOutlet UILabel *priceIndicator;
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section;
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath;

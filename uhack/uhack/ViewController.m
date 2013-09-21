@@ -33,6 +33,8 @@
     NSMutableArray *org_array;
     NSMutableArray *autocomplete_array;
     UITextField *currentFirstResponder;
+    BOOL calculate;
+    Travel *currentTravel;
 }
 
 - (void)viewDidLoad
@@ -41,6 +43,7 @@
 
     org_array = [[NSMutableArray alloc] init];
     autocomplete_array = [[NSMutableArray alloc] init];
+    calculate = YES;
 }
 
 - (void)initTableView
@@ -110,6 +113,11 @@
 
 - (void)textFieldDidBeginEditing:(UITextField *)textField
 {
+    if (calculate == NO) {
+        calculate = YES;
+        [self.submitButton setTitle:@"Räkna pris" forState:UIControlStateNormal];
+    }
+    
     currentFirstResponder = textField;
     
     [UIView animateWithDuration:0.3
@@ -230,7 +238,17 @@
 }
 
 - (IBAction) submitPressed:(id)sender {
-    
+    if (calculate == NO) {
+        MFMessageComposeViewController *controller = [[MFMessageComposeViewController alloc] init];
+        if ([MFMessageComposeViewController canSendText]) {
+            controller.body = self->currentTravel.msgText;
+            controller.recipients = [NSArray arrayWithObjects:self->currentTravel.msgNumber, nil];
+            controller.messageComposeDelegate = self;
+            [self presentModalViewController:controller animated:YES];
+        }
+
+        return;
+    }
     Location *from = self.fromLocation;
     Location *to = self.toLocation;
     
@@ -262,16 +280,12 @@
     [objectManager getObjectsAtPath:url
                          parameters:nil
                             success:^(RKObjectRequestOperation *operation, RKMappingResult *mappingResult) {
-                                NSLog(@"Array: %@",[mappingResult array]);
-                                Travel *info = [[mappingResult array] objectAtIndex:0];
+                                currentTravel = [[mappingResult array] objectAtIndex:0];
+                                [self.priceIndicator setText: [NSString stringWithFormat:@"%@:-", [NSString stringWithString:[currentTravel.price stringValue]]]];
+                                [self.priceIndicator setTextColor:[UIColor whiteColor]];
                                 
-                                MFMessageComposeViewController *controller = [[MFMessageComposeViewController alloc] init];
-                                if ([MFMessageComposeViewController canSendText]) {
-                                    controller.body = info.msgText;
-                                    controller.recipients = [NSArray arrayWithObjects:info.msgNumber, nil];
-                                    controller.messageComposeDelegate = self;
-                                    [self presentModalViewController:controller animated:YES];
-                                }
+                                [self.submitButton setTitle:@"Skicka SMS" forState:UIControlStateNormal];
+                                self->calculate = NO;
                             }
                             failure:^(RKObjectRequestOperation *operation, NSError *error) {
                                 FUIAlertView *alertView = [[FUIAlertView alloc] initWithTitle:@"Fel"

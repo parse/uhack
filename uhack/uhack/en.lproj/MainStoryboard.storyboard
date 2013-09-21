@@ -55,10 +55,17 @@
                                 <rect key="frame" x="20" y="302" width="280" height="59"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <fontDescription key="fontDescription" name="HelveticaNeue-Light" family="Helvetica Neue" pointSize="18"/>
-                                <state key="normal" title="Skapa SMS">
+                                <state key="normal" title="Räkna pris">
                                     <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                                 </state>
                             </button>
+                            <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Pris" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="7OO-sv-3UD">
+                                <rect key="frame" x="81" y="433" width="158" height="60"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <fontDescription key="fontDescription" name="HelveticaNeue-Bold" family="Helvetica Neue" pointSize="65"/>
+                                <color key="textColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                                <nil key="highlightedColor"/>
+                            </label>
                             <view contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="W7k-i9-zhT">
                                 <rect key="frame" x="21" y="124" width="279" height="84"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
@@ -85,6 +92,7 @@
                     <connections>
                         <outlet property="fromTextView" destination="Wwq-2t-StV" id="6yO-Li-0jh"/>
                         <outlet property="logoView" destination="W7k-i9-zhT" id="see-fJ-e8G"/>
+                        <outlet property="priceIndicator" destination="7OO-sv-3UD" id="tag-ca-YbY"/>
                         <outlet property="searchResults" destination="ZfS-er-bdr" id="9Q6-Rn-U9f"/>
                         <outlet property="submitButton" destination="L0z-L0-Zvj" id="FtT-Rl-ZOE"/>
                         <outlet property="toTextView" destination="enq-dL-yhA" id="bIX-ZS-lf4"/>
