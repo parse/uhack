@@ -10,7 +10,7 @@
 #import "FUIButton.h"
 
 
-@interface ViewController : UIViewController
+@interface ViewController : UIViewController <UITextFieldDelegate>
 
 @property (nonatomic, retain) IBOutlet FUIButton *submitButton;
 @property (nonatomic, retain) IBOutlet UITextView *fromTextView;

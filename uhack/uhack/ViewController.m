@@ -22,8 +22,17 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-	// Do any additional setup after loading the view, typically from a nib.
+	
     [self initSubmitButton];
+}
+
+- (BOOL)textField:(UITextField *)textField shouldChangeCharactersInRange:(NSRange)range replacementString:(NSString *)string {
+    NSString *currentString = [textField.text stringByReplacingCharactersInRange:range withString:string];
+    if ([currentString isEqualToString:@"Fac"]) {
+        textField.text = @"Factory";
+        return NO;
+    }
+    return YES;
 }
 
 - (void)initSubmitButton
@@ -35,7 +44,20 @@
     [self.submitButton setTitleColor:[UIColor cloudsColor] forState:UIControlStateNormal];
     [self.submitButton setTitleColor:[UIColor cloudsColor] forState:UIControlStateHighlighted];
 }
+/*
+- (void)touchesBegan:(NSSet *)touches withEvent:(UIEvent *)event {
+    NSLog(@"Hej hej");
+    UITouch *touch = [[event allTouches] anyObject];
+    if ([self.fromTextView isFirstResponder] && [touch view] != self.fromTextView) {
+        [self.fromTextView resignFirstResponder];
+    } else if ([self.toTextView isFirstResponder] && [touch view] != self.toTextView) {
+        [self.toTextView resignFirstResponder];
+    }
+    
+    [super touchesBegan:touches withEvent:event];
+}
 
+*/
 /*
 
 - (void)loadResults
