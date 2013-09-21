@@ -47,7 +47,7 @@
 {
     [super viewDidLoad];
     
-    currentTravelerType = @"SLH";
+    currentTravelerType = @"H";
 
     org_array = [[NSMutableArray alloc] init];
     autocomplete_array = [[NSMutableArray alloc] init];
@@ -469,27 +469,8 @@
 
 - (void)messageComposeViewController:(MFMessageComposeViewController *)controller didFinishWithResult:(MessageComposeResult)result
 {
-    NSString *event_info = @"";
-    // Notifies users about errors associated with the interface
-    switch (result)
-    {
-        case MessageComposeResultCancelled:
-            event_info = @"SMS_CANCELED";
-            break;
-        case MessageComposeResultSent:
-            event_info = @"SMS_SENT";
-            break;
-        case MessageComposeResultFailed:
-            event_info = @"SMS_FAILED";
-            break;
-        default:
-            event_info = @"SMS_UNKNOWN";
-            break;
-    }
-    
     //hide mail composer
     [messageController dismissModalViewControllerAnimated:YES];
-    [self switchedTravelerType:nil];
 }
 
 - (IBAction)switchedTravelerType:(id)sender
