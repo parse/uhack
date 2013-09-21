@@ -1,4 +1,5 @@
 platform :ios, '7.0'
 pod 'JSONKit'
 pod 'Reachability'
-pod "AFNetworking", "2.0.0-RC3"
+pod 'RestKit', '~> 0.20.0'
+pod "GoogleAnalytics-iOS-SDK"

@@ -7,12 +7,55 @@
 //
 
 #import "AppDelegate.h"
+#import <RestKit/RestKit.h>
+#import "AFNetworking.h"
+#import "Travel.h"
+#import "Location.h"
+
 
 @implementation AppDelegate
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
     // Override point for customization after application launch.
+    
+    RKLogConfigureByName("RestKit/Network", RKLogLevelTrace);
+    RKLogConfigureByName("RestKit/ObjectMapping", RKLogLevelTrace);
+    
+    [AFNetworkActivityIndicatorManager sharedManager].enabled = YES;
+
+    // Initialize HTTPClient
+    NSURL *baseURL = [NSURL URLWithString:@"https://klarsprak.appanero.se"];
+    AFHTTPClient* client = [[AFHTTPClient alloc] initWithBaseURL:baseURL];
+    //we want to work with JSON-Data
+    [client setDefaultHeader:@"Accept" value:RKMIMETypeJSON];
+    
+    RKObjectManager *objectManager = [[RKObjectManager alloc] initWithHTTPClient:client];
+    
+    // Travel
+    RKObjectMapping *travelMapping = [RKObjectMapping mappingForClass:[Travel class]];
+    [travelMapping addAttributeMappingsFromDictionary:@{
+                                                          @"id" : @"id",
+                                                          @"name" : @"name"
+                                                          }];
+    RKResponseDescriptor *responseDescriptor = [RKResponseDescriptor responseDescriptorWithMapping:travelMapping
+                                                                                        pathPattern:nil
+                                                                                            keyPath:@"travel"
+                                                                                        statusCodes:RKStatusCodeIndexSetForClass(RKStatusCodeClassSuccessful)];
+    [objectManager addResponseDescriptor:responseDescriptor];
+    
+    // Locations
+    RKObjectMapping *locationMapping = [RKObjectMapping mappingForClass:[Travel class]];
+    [locationMapping addAttributeMappingsFromDictionary:@{
+                                                        @"zones" : @"zones",
+                                                        @"price" : @"price"
+                                                        }];
+    responseDescriptor = [RKResponseDescriptor responseDescriptorWithMapping:locationMapping
+                                                                                       pathPattern:nil
+                                                                                           keyPath:@"location"
+                                                                                       statusCodes:RKStatusCodeIndexSetForClass(RKStatusCodeClassSuccessful)];
+    [objectManager addResponseDescriptor:responseDescriptor];
+
     return YES;
 }
 							
