@@ -43,7 +43,7 @@
 		9A2CBF8817EDF2E8001687B5 /* icon-ipad@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "icon-ipad@2x.png"; sourceTree = "<group>"; };
 		9A2CBF8917EDF2E8001687B5 /* icon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = icon.png; sourceTree = "<group>"; };
 		9A2CBF8A17EDF2E8001687B5 /* icon@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "icon@2x.png"; sourceTree = "<group>"; };
-		9AB3238E17ED7C9C0016072D /* uhack.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = uhack.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		9AB3238E17ED7C9C0016072D /* SLussen.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = SLussen.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		9AB3239117ED7C9C0016072D /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = System/Library/Frameworks/UIKit.framework; sourceTree = SDKROOT; };
 		9AB3239317ED7C9C0016072D /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
 		9AB3239517ED7C9C0016072D /* CoreGraphics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreGraphics.framework; path = System/Library/Frameworks/CoreGraphics.framework; sourceTree = SDKROOT; };
@@ -112,7 +112,7 @@
 		9AB3238F17ED7C9C0016072D /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				9AB3238E17ED7C9C0016072D /* uhack.app */,
+				9AB3238E17ED7C9C0016072D /* SLussen.app */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -213,7 +213,7 @@
 			);
 			name = uhack;
 			productName = uhack;
-			productReference = 9AB3238E17ED7C9C0016072D /* uhack.app */;
+			productReference = 9AB3238E17ED7C9C0016072D /* SLussen.app */;
 			productType = "com.apple.product-type.application";
 		};
 /* End PBXNativeTarget section */
@@ -395,7 +395,7 @@
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "uhack/uhack-Prefix.pch";
 				INFOPLIST_FILE = "uhack/uhack-Info.plist";
-				PRODUCT_NAME = "$(TARGET_NAME)";
+				PRODUCT_NAME = SLussen;
 				WRAPPER_EXTENSION = app;
 			};
 			name = Debug;
@@ -407,7 +407,7 @@
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "uhack/uhack-Prefix.pch";
 				INFOPLIST_FILE = "uhack/uhack-Info.plist";
-				PRODUCT_NAME = "$(TARGET_NAME)";
+				PRODUCT_NAME = SLussen;
 				WRAPPER_EXTENSION = app;
 			};
 			name = Release;
