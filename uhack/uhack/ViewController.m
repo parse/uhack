@@ -32,7 +32,7 @@
     [self initTextFields];
     [self initTableView];
     
-    //[self loadResults];
+    [self loadResults];
 
     autocomplete_array = [[NSMutableArray alloc] init];
 }
@@ -140,10 +140,10 @@
 
 - (void)loadResults
 {
-    NSString *url = @"/api/station";
+    NSString *url = @"/api/station/";
     NSString *query = [[NSString alloc] initWithFormat:@"järla?%@", @"format=json"];
     url = [url stringByAppendingString:query];
-    
+
     RKObjectManager *objectManager = [RKObjectManager sharedManager];
     [objectManager getObjectsAtPath:url
                          parameters:nil
