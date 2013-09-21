@@ -41,14 +41,25 @@
 {
     self.searchResults.layer.borderWidth = 1.0;
     self.searchResults.layer.borderColor = [[UIColor colorWithWhite:.5 alpha:.5] CGColor];
+    
+    debugLog(@"Height: %f", self.searchResults.frame.size.height);
+    
+    CGFloat height = self.searchResults.rowHeight;
+    height *= 3;
+    height += 100;
+    
+    CGRect tableFrame = self.searchResults.frame;
+    tableFrame.size.height = height;
+    self.searchResults.frame = tableFrame;
+    debugLog(@"Height: %f, %f", height, self.searchResults.frame.size.height);
 }
 
 - (void)initTextFields
 {
     self.fromTextView.layer.borderWidth = 1.0;
-    self.fromTextView.layer.borderColor = [[UIColor turquoiseColor] CGColor];
+    self.searchResults.layer.borderColor = [[UIColor colorWithWhite:.5 alpha:.5] CGColor];
     self.toTextView.layer.borderWidth = 1.0;
-    self.toTextView.layer.borderColor = [[UIColor turquoiseColor] CGColor];
+    self.searchResults.layer.borderColor = [[UIColor colorWithWhite:.5 alpha:.5] CGColor];
 }
 
 - (void)searchAutocompleteEntriesWithSubstring:(NSString *)substring
@@ -68,6 +79,7 @@
             [autocomplete_array addObject:curString];
         }
     }
+    
     [self.searchResults reloadData];
 }
 
@@ -97,14 +109,70 @@
 
 - (void)textFieldDidBeginEditing:(UITextField *)textField
 {
-    [UIView animateWithDuration:0.3 animations:^{  // animate the following:
+    debugLog(@"Height: %f", self.searchResults.frame.size.height);
+    [UIView animateWithDuration:0.3 animations:^{
+        CGRect logoFrame = self.logoView.frame;
+        self.logoView.frame = CGRectify(logoFrame, -1, logoFrame.origin.y - 100, -1, -1);
         
+        CGRect fromFrame = self.fromTextView.frame;
+        self.fromTextView.frame = CGRectify(fromFrame, -1, fromFrame.origin.y - 100, -1, -1);
+        
+        int changeOffset = 0;
+        if (textField == self.toTextView)
+            changeOffset = -100;
+        else if (textField == self.fromTextView)
+            changeOffset = 50;
+        
+        CGRect toFrame = self.toTextView.frame;
+        self.toTextView.frame = CGRectify(toFrame, -1, toFrame.origin.y + changeOffset, -1, -1);
+        
+        CGRect buttonFrame = self.submitButton.frame;
+        self.submitButton.frame = CGRectify(buttonFrame, -1, buttonFrame.origin.y + 50, -1, -1);
+    } completion:^(BOOL finished) {
+        self.searchResults.alpha = 0;
+        self.searchResults.hidden = NO;
+        
+        int y = 0;
+        if (textField == self.toTextView)
+            y = self.toTextView.frame.origin.y + 30;
+        else if (textField == self.fromTextView)
+            y = self.fromTextView.frame.origin.y + 30;
+        CGRect searchFrame = self.searchResults.frame;
+        
+        self.searchResults.frame = CGRectify(searchFrame, -1, y, -1, -1);
+        
+        [UIView animateWithDuration:0.4 animations:^{
+            self.searchResults.alpha = 1;
+        }];
     }];
 }
 
 - (void)textFieldDidEndEditing:(UITextField *)textField
 {
-    
+    [UIView animateWithDuration:0.2 animations:^{
+        self.searchResults.alpha = 0;
+    } completion:^(BOOL finished) {
+        self.searchResults.hidden = YES;
+        [UIView animateWithDuration:0.3 animations:^{
+            CGRect logoFrame = self.logoView.frame;
+            self.logoView.frame = CGRectify(logoFrame, -1, logoFrame.origin.y + 100, -1, -1);
+            
+            CGRect fromFrame = self.fromTextView.frame;
+            self.fromTextView.frame = CGRectify(fromFrame, -1, fromFrame.origin.y + 100, -1, -1);
+            
+            int changeOffset = 0;
+            if (textField == self.toTextView)
+                changeOffset = 100;
+            else if (textField == self.fromTextView)
+                changeOffset = -50;
+            
+            CGRect toFrame = self.toTextView.frame;
+            self.toTextView.frame = CGRectify(toFrame, -1, toFrame.origin.y + changeOffset, -1, -1);
+            
+            CGRect buttonFrame = self.submitButton.frame;
+            self.submitButton.frame = CGRectify(buttonFrame, -1, buttonFrame.origin.y - 50, -1, -1);
+        }];
+    }];
 }
 
 - (BOOL)textField:(UITextField *)textField shouldChangeCharactersInRange:(NSRange)range replacementString:(NSString *)string {

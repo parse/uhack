@@ -18,3 +18,14 @@
 #else
 #define debugLog(s, ...)
 #endif
+
+CG_INLINE CGRect
+CGRectify(CGRect rect, CGFloat newX, CGFloat newY, CGFloat newWidth, CGFloat newHeight)
+{
+    CGRect newRect;
+    newRect.origin.x = newX > -1 ? newX : rect.origin.x;
+    newRect.origin.y = newY > -1 ? newY : rect.origin.y;
+    newRect.size.width = newWidth > -1 ? newWidth : rect.size.width;
+    newRect.size.height = newHeight > -1 ? newHeight : rect.size.height;
+    return newRect;
+}
