@@ -17,21 +17,47 @@
 
 @end
 
-@implementation ViewController
+@implementation ViewController {
+    NSMutableArray *autocomplete_array;
+}
 
 - (void)viewDidLoad
 {
     [super viewDidLoad];
 	
     [self initSubmitButton];
+    
+    autocomplete_array = [[NSMutableArray alloc] init];
+}
+
+- (void)searchAutocompleteEntriesWithSubstring:(NSString *)substring
+{
+    NSArray *dataSource = [NSArray arrayWithObjects:@"anders", @"uppsal", @"hackathon", @"daniel", @"sandra",nil];
+    
+    // Empty result data view
+    [autocomplete_array removeAllObjects];
+    
+    for(int i = 0; i < [dataSource count]; i++) {
+        NSString *curString = [dataSource objectAtIndex:i];
+        
+        curString = [curString lowercaseString];
+        substring = [substring lowercaseString];
+        
+        if ([curString rangeOfString:substring].location != NSNotFound) {
+            [autocomplete_array addObject:curString];
+        }
+    }
+    
+    NSLog(@"Autocomplete: %@", autocomplete_array);
+    
+    // Reload result data view
 }
 
 - (BOOL)textField:(UITextField *)textField shouldChangeCharactersInRange:(NSRange)range replacementString:(NSString *)string {
-    NSString *currentString = [textField.text stringByReplacingCharactersInRange:range withString:string];
-    if ([currentString isEqualToString:@"Fac"]) {
-        textField.text = @"Factory";
-        return NO;
-    }
+    NSString *substring = [NSString stringWithString:textField.text];
+    substring = [substring stringByReplacingCharactersInRange:range withString:string];
+    [self searchAutocompleteEntriesWithSubstring:substring];
+    
     return YES;
 }
 
@@ -44,7 +70,7 @@
     [self.submitButton setTitleColor:[UIColor cloudsColor] forState:UIControlStateNormal];
     [self.submitButton setTitleColor:[UIColor cloudsColor] forState:UIControlStateHighlighted];
 }
-/*
+
 - (void)touchesBegan:(NSSet *)touches withEvent:(UIEvent *)event {
     NSLog(@"Hej hej");
     UITouch *touch = [[event allTouches] anyObject];
@@ -57,7 +83,7 @@
     [super touchesBegan:touches withEvent:event];
 }
 
-*/
+
 /*
 
 - (void)loadResults
