@@ -8,19 +8,18 @@
 
 #import <MessageUI/MessageUI.h>
 #import <MessageUI/MFMessageComposeViewController.h>
-
-#import "ViewController.h"
+#import "UIFont+FlatUI.h"
+#import "QuartzCore/QuartzCore.h"
+#import <RestKit/RestKit.h>
 #import <FlatUIKit/UIColor+FlatUI.h>
+#import "NSString+Extended.h"
+#import "ViewController.h"
 #import "AppDelegate.h"
 #import "UIColor+FlatUI.h"
 #import "FUIButton.h"
 #import "FUISwitch.h"
-#import "UIFont+FlatUI.h"
-#import  "QuartzCore/QuartzCore.h"
-#import <RestKit/RestKit.h>
 #import "Location.h"
 #import "Travel.h"
-#import "NSString+Extended.h"
 
 @interface ViewController ()
 
@@ -42,6 +41,9 @@
 
 #define UPOFFSET 84
 #define DOWNOFFSET 50
+
+#define COUNTPRICE @"Räkna pris"
+#define SENDTEXT @"Skicka SMS"
 
 - (void)viewDidLoad
 {
@@ -185,6 +187,7 @@
                          }];
                      }];
 }
+
 - (void)expandToAfterClosingFrom
 {
     [self.view.layer removeAllAnimations];
@@ -195,6 +198,7 @@
                          [self expandTo];
                      }];
 }
+
 - (void) expandFromAfterClosingTo
 {
     [self.view.layer removeAllAnimations];
@@ -242,6 +246,7 @@
                          }];
                      }];
 }
+
 - (void)closeFields
 {
     [self.view.layer removeAllAnimations];
@@ -273,7 +278,7 @@
 {
     if (calculate == NO) {
         calculate = YES;
-        [self.submitButton setTitle:@"Räkna pris" forState:UIControlStateNormal];
+        [self.submitButton setTitle: COUNTPRICE forState:UIControlStateNormal];
     }
     
     currentFirstResponder = textField;
@@ -281,11 +286,11 @@
     [self.searchResults reloadData];
 }
 
-- (void)textFieldDidEndEditing:(UITextField *)textField
-{
-}
+- (void)textFieldDidEndEditing:(UITextField *)textField { }
 
 - (BOOL)textField:(UITextField *)textField shouldChangeCharactersInRange:(NSRange)range replacementString:(NSString *)string {
+    // @TODO: Make sure to kill all the previous connections so we dont
+    // populate the other input text
     [autocomplete_array removeAllObjects];
     [self.searchResults reloadData];
     
@@ -294,6 +299,7 @@
     
     substring = [substring urlencode];
     
+    // @TODO: Add version to API, and its an ugly way to do the api querystring.
     NSString *url = @"/api/station/";
     NSString *query = [[NSString alloc] initWithFormat:@"%@?%@", substring, @"format=json"];
     url = [url stringByAppendingString:query];
@@ -346,6 +352,7 @@
     Location *to = self.toLocation;
     
     if (!from || !to) {
+        //@TODO: Add version to API
         FUIAlertView *alertView = [[FUIAlertView alloc] initWithTitle:@"Fel"
                                                               message:@"Fyll i alla fält"
                                                              delegate:nil cancelButtonTitle:nil
@@ -361,6 +368,7 @@
         alertView.defaultButtonFont = [UIFont boldFlatFontOfSize:16];
         alertView.defaultButtonTitleColor = [UIColor asbestosColor];
         [alertView show];
+        
         return;
     }
     
@@ -377,7 +385,7 @@
                                 [self.priceIndicator setText: [NSString stringWithFormat:@"%@:-", [NSString stringWithString:[currentTravel.price stringValue]]]];
                                 [self.priceIndicator setTextColor:[UIColor whiteColor]];
                                 
-                                [self.submitButton setTitle:@"Skicka SMS" forState:UIControlStateNormal];
+                                [self.submitButton setTitle:SENDTEXT forState:UIControlStateNormal];
                                 self->calculate = NO;
                             }
                             failure:^(RKObjectRequestOperation *operation, NSError *error) {
@@ -476,7 +484,7 @@
 - (IBAction)switchedTravelerType:(id)sender
 {
     calculate = YES;
-    self.submitButton.titleLabel.text = @"Räkna pris";
+    self.submitButton.titleLabel.text = COUNTPRICE;
     currentTravelerType = self.travelerTypeControl.selectedSegmentIndex == 0 ? @"H" : @"R";
 }
 
