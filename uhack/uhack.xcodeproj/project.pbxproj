@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		9A2CBF7A17EDD189001687B5 /* MessageUI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9A2CBF7917EDD189001687B5 /* MessageUI.framework */; };
+		9A2CBF7E17EDD5FB001687B5 /* NSString+Extended.m in Sources */ = {isa = PBXBuildFile; fileRef = 9A2CBF7D17EDD5FB001687B5 /* NSString+Extended.m */; };
 		9AB3239217ED7C9C0016072D /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9AB3239117ED7C9C0016072D /* UIKit.framework */; };
 		9AB3239417ED7C9C0016072D /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9AB3239317ED7C9C0016072D /* Foundation.framework */; };
 		9AB3239617ED7C9C0016072D /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9AB3239517ED7C9C0016072D /* CoreGraphics.framework */; };
@@ -32,6 +33,8 @@
 /* Begin PBXFileReference section */
 		71A1D9D2144F40B29D99B12C /* Pods.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.xcconfig; path = Pods/Pods.xcconfig; sourceTree = "<group>"; };
 		9A2CBF7917EDD189001687B5 /* MessageUI.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MessageUI.framework; path = System/Library/Frameworks/MessageUI.framework; sourceTree = SDKROOT; };
+		9A2CBF7C17EDD5FB001687B5 /* NSString+Extended.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSString+Extended.h"; sourceTree = "<group>"; };
+		9A2CBF7D17EDD5FB001687B5 /* NSString+Extended.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSString+Extended.m"; sourceTree = "<group>"; };
 		9AB3238E17ED7C9C0016072D /* uhack.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = uhack.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		9AB3239117ED7C9C0016072D /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = System/Library/Frameworks/UIKit.framework; sourceTree = SDKROOT; };
 		9AB3239317ED7C9C0016072D /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
@@ -79,6 +82,15 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		9A2CBF7B17EDD5D2001687B5 /* Categories */ = {
+			isa = PBXGroup;
+			children = (
+				9A2CBF7C17EDD5FB001687B5 /* NSString+Extended.h */,
+				9A2CBF7D17EDD5FB001687B5 /* NSString+Extended.m */,
+			);
+			name = Categories;
+			sourceTree = "<group>";
+		};
 		9AB3238517ED7C9C0016072D = {
 			isa = PBXGroup;
 			children = (
@@ -115,6 +127,7 @@
 		9AB3239717ED7C9C0016072D /* uhack */ = {
 			isa = PBXGroup;
 			children = (
+				9A2CBF7B17EDD5D2001687B5 /* Categories */,
 				9AE457CC17ED8E1500068F24 /* Controllers */,
 				9AE457CB17ED8E0F00068F24 /* Models */,
 				9AB323A017ED7C9C0016072D /* AppDelegate.h */,
@@ -272,6 +285,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				9A2CBF7E17EDD5FB001687B5 /* NSString+Extended.m in Sources */,
 				9AB3239E17ED7C9C0016072D /* main.m in Sources */,
 				9AE1999F17ED944A00BC0E2A /* Travel.m in Sources */,
 				9AB323A217ED7C9C0016072D /* AppDelegate.m in Sources */,

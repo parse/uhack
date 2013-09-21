@@ -20,6 +20,7 @@
 #import <RestKit/RestKit.h>
 #import "Location.h"
 #import "Travel.h"
+#import "NSString+Extended.h"
 
 @interface ViewController ()
 
@@ -190,6 +191,8 @@
     NSString *substring = [NSString stringWithString:textField.text];
     substring = [substring stringByReplacingCharactersInRange:range withString:string];
     
+    substring = [substring urlencode];
+    
     NSString *url = @"/api/station/";
     NSString *query = [[NSString alloc] initWithFormat:@"%@?%@", substring, @"format=json"];
     url = [url stringByAppendingString:query];
@@ -241,11 +244,30 @@
 }
 
 - (IBAction) submitPressed:(id)sender {
-    // @TODO Generate sms
-    NSInteger from = 9509;
-    NSInteger to = 9302;
     
-    NSString *query = [[NSString alloc] initWithFormat:@"/api/ticketinfo/%d/%d/%@", from, to, @"SLH"];
+    Location *from = self.fromLocation;
+    Location *to = self.toLocation;
+    
+    if (!from || !to) {
+        FUIAlertView *alertView = [[FUIAlertView alloc] initWithTitle:@"Fel"
+                                                              message:@"Fyll i alla fält"
+                                                             delegate:nil cancelButtonTitle:nil
+                                                    otherButtonTitles:@"Ok", nil];
+        alertView.titleLabel.textColor = [UIColor cloudsColor];
+        alertView.titleLabel.font = [UIFont boldFlatFontOfSize:16];
+        alertView.messageLabel.textColor = [UIColor cloudsColor];
+        alertView.messageLabel.font = [UIFont flatFontOfSize:14];
+        alertView.backgroundOverlay.backgroundColor = [[UIColor cloudsColor] colorWithAlphaComponent:0.8];
+        alertView.alertContainer.backgroundColor = [UIColor midnightBlueColor];
+        alertView.defaultButtonColor = [UIColor cloudsColor];
+        alertView.defaultButtonShadowColor = [UIColor asbestosColor];
+        alertView.defaultButtonFont = [UIFont boldFlatFontOfSize:16];
+        alertView.defaultButtonTitleColor = [UIColor asbestosColor];
+        [alertView show];
+        return;
+    }
+    
+    NSString *query = [[NSString alloc] initWithFormat:@"/api/ticketinfo/%d/%d/%@", [from.ID integerValue], [to.ID integerValue], @"SLH"];
     NSString *url = [[NSString alloc] initWithFormat:@"%@?%@", query, @"format=json"];
     
     RKObjectManager *objectManager = [RKObjectManager sharedManager];
