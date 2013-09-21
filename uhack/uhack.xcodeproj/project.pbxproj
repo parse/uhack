@@ -140,9 +140,6 @@
 				9AE457CB17ED8E0F00068F24 /* Models */,
 				9AB323A017ED7C9C0016072D /* AppDelegate.h */,
 				9AB323A117ED7C9C0016072D /* AppDelegate.m */,
-				9AB323A917ED7C9C0016072D /* MainStoryboard.storyboard */,
-				9AB323AC17ED7C9C0016072D /* ViewController.h */,
-				9AB323AD17ED7C9C0016072D /* ViewController.m */,
 				9AB3239817ED7C9C0016072D /* Supporting Files */,
 			);
 			path = uhack;
@@ -151,6 +148,7 @@
 		9AB3239817ED7C9C0016072D /* Supporting Files */ = {
 			isa = PBXGroup;
 			children = (
+				9AB323A917ED7C9C0016072D /* MainStoryboard.storyboard */,
 				9AE457CD17ED8E2200068F24 /* Images */,
 				9AB3239917ED7C9C0016072D /* uhack-Info.plist */,
 				9AB3239A17ED7C9C0016072D /* InfoPlist.strings */,
@@ -174,6 +172,8 @@
 		9AE457CC17ED8E1500068F24 /* Controllers */ = {
 			isa = PBXGroup;
 			children = (
+				9AB323AC17ED7C9C0016072D /* ViewController.h */,
+				9AB323AD17ED7C9C0016072D /* ViewController.m */,
 			);
 			name = Controllers;
 			sourceTree = "<group>";
