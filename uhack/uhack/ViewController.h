@@ -8,9 +8,10 @@
 
 #import <UIKit/UIKit.h>
 #import "FUIButton.h"
+#import "FUISwitch.h"
+#import "FUIAlertView.h"
 
-
-@interface ViewController : UIViewController <UITextFieldDelegate, UITableViewDataSource, UITableViewDelegate>
+@interface ViewController : UIViewController <UITextFieldDelegate, UITableViewDataSource, UITableViewDelegate, FUIAlertViewDelegate>
 
 @property (nonatomic, retain) IBOutlet FUIButton *submitButton;
 @property (nonatomic, retain) IBOutlet UITextField *fromTextView;
