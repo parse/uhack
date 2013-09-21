@@ -13,12 +13,15 @@
 
 @interface ViewController : UIViewController <UITextFieldDelegate, UITableViewDataSource, UITableViewDelegate, FUIAlertViewDelegate, UIGestureRecognizerDelegate>
 
-@property (nonatomic, retain) IBOutlet FUIButton *submitButton;
+@property (nonatomic, retain) IBOutlet UIView *logoView;
+@property (nonatomic, retain) IBOutlet UISegmentedControl *travelerTypeControl;
 @property (nonatomic, retain) IBOutlet UITextField *fromTextView;
 @property (nonatomic, retain) IBOutlet UITextField *toTextView;
 @property (nonatomic, retain) IBOutlet UITableView *searchResults;
-@property (nonatomic, retain) IBOutlet UIView *logoView;
+@property (nonatomic, retain) IBOutlet FUIButton *submitButton;
 @property (nonatomic, retain) IBOutlet UILabel *priceIndicator;
+
+- (IBAction)switchedTravelerType:(id)sender;
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section;
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath;

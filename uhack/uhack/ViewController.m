@@ -35,7 +35,8 @@
     UITextField *currentFirstResponder;
     BOOL calculate;
     Travel *currentTravel;
-    CGFloat priceOriginalY, logoOriginalY, fromOriginalY, toOriginalY, submitOriginalY;
+    CGFloat priceOriginalY, logoOriginalY, travelerTypeOriginalY, fromOriginalY, toOriginalY, submitOriginalY;
+    NSString *currentTravelerType;
 }
 
 #define UPOFFSET 84
@@ -44,6 +45,8 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
+    
+    currentTravelerType = @"SLH";
 
     org_array = [[NSMutableArray alloc] init];
     autocomplete_array = [[NSMutableArray alloc] init];
@@ -71,12 +74,19 @@
     [self initSubmitButton];
     [self initTextFields];
     [self initTableView];
+    [self initSegmentControl];
     
     priceOriginalY = 0;
     logoOriginalY = self.logoView.frame.origin.y;
+    travelerTypeOriginalY = self.travelerTypeControl.frame.origin.y;
     fromOriginalY = self.fromTextView.frame.origin.y;
     toOriginalY = self.toTextView.frame.origin.y;
     submitOriginalY = self.submitButton.frame.origin.y;
+}
+
+- (void)initSegmentControl
+{
+    self.travelerTypeControl.tintColor = [UIColor turquoiseColor];
 }
 
 - (void)initTextFields
@@ -146,6 +156,9 @@
                          CGRect logoFrame = self.logoView.frame;
                          self.logoView.frame = CGRectify(logoFrame, -1, logoOriginalY - UPOFFSET, -1, -1);
                          
+                         CGRect travelerFrame = self.travelerTypeControl.frame;
+                         self.travelerTypeControl.frame = CGRectify(travelerFrame, -1, travelerTypeOriginalY - UPOFFSET, -1, -1);
+                         
                          CGRect fromFrame = self.fromTextView.frame;
                          self.fromTextView.frame = CGRectify(fromFrame, -1, fromOriginalY - UPOFFSET, -1, -1);
                          
@@ -200,6 +213,9 @@
                          CGRect logoFrame = self.logoView.frame;
                          self.logoView.frame = CGRectify(logoFrame, -1, logoOriginalY - UPOFFSET, -1, -1);
                          
+                         CGRect travelerFrame = self.travelerTypeControl.frame;
+                         self.travelerTypeControl.frame = CGRectify(travelerFrame, -1, travelerTypeOriginalY - UPOFFSET, -1, -1);
+                         
                          CGRect fromFrame = self.fromTextView.frame;
                          self.fromTextView.frame = CGRectify(fromFrame, -1, fromOriginalY - UPOFFSET, -1, -1);
                          
@@ -236,6 +252,9 @@
                          [UIView animateWithDuration:0.3 animations:^{
                              CGRect logoFrame = self.logoView.frame;
                              self.logoView.frame = CGRectify(logoFrame, -1, logoOriginalY, -1, -1);
+                             
+                             CGRect travelerFrame = self.travelerTypeControl.frame;
+                             self.travelerTypeControl.frame = CGRectify(travelerFrame, -1, travelerTypeOriginalY, -1, -1);
                              
                              CGRect fromFrame = self.fromTextView.frame;
                              self.fromTextView.frame = CGRectify(fromFrame, -1, fromOriginalY, -1, -1);
@@ -344,7 +363,7 @@
         return;
     }
     
-    NSString *query = [[NSString alloc] initWithFormat:@"/api/ticketinfo/%d/%d/%@", [from.ID integerValue], [to.ID integerValue], @"SLH"];
+    NSString *query = [[NSString alloc] initWithFormat:@"/api/ticketinfo/%d/%d/%@", [from.ID integerValue], [to.ID integerValue], currentTravelerType];
     NSString *url = [[NSString alloc] initWithFormat:@"%@?%@", query, @"format=json"];
     
     RKObjectManager *objectManager = [RKObjectManager sharedManager];
@@ -446,6 +465,13 @@
             [self dismissKeyboard];
         }
     }
+}
+
+- (IBAction)switchedTravelerType:(id)sender
+{
+    calculate = YES;
+    self.submitButton.titleLabel.text = @"Räkna pris";
+    currentTravelerType = self.travelerTypeControl.selectedSegmentIndex == 0 ? @"SLH" : @"SLR";
 }
 
 @end
