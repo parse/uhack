@@ -1,4 +1,4 @@
-#import "Location.h"
+#import "Travel.h"
 
 @implementation Travel
 

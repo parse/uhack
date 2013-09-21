@@ -9,6 +9,11 @@
 			<key>orderHint</key>
 			<integer>2</integer>
 		</dict>
+		<key>Pods-FlatUIKit.xcscheme</key>
+		<dict>
+			<key>orderHint</key>
+			<integer>9</integer>
+		</dict>
 		<key>Pods-GoogleAnalytics-iOS-SDK.xcscheme</key>
 		<dict>
 			<key>orderHint</key>
@@ -57,12 +62,27 @@
 			<key>primary</key>
 			<true/>
 		</dict>
+		<key>2415928EA10E410C89FD5ECE</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
 		<key>27CEC0D946FC477DBFCC417D</key>
 		<dict>
 			<key>primary</key>
 			<true/>
 		</dict>
 		<key>28B98285211A407BB8C8720A</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
+		<key>4381006EF6F44F99BE30F256</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
+		<key>43B50A479CDB4D79B14E721A</key>
 		<dict>
 			<key>primary</key>
 			<true/>
@@ -77,12 +97,32 @@
 			<key>primary</key>
 			<true/>
 		</dict>
+		<key>593F499C7BA34CC9AB802822</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
 		<key>5C309D07F0354562BE9EE75B</key>
 		<dict>
 			<key>primary</key>
 			<true/>
 		</dict>
+		<key>6592AED623E34516883E720C</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
 		<key>66A1AD321166446B8BE141DA</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
+		<key>6AFB5FAAC8344387B43D466C</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
+		<key>73DA3DC28589496D8E2AADB7</key>
 		<dict>
 			<key>primary</key>
 			<true/>
@@ -102,12 +142,22 @@
 			<key>primary</key>
 			<true/>
 		</dict>
+		<key>9F49C60EA5244DA78C450EE0</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
 		<key>AB8CAD730EFA4F719178AF23</key>
 		<dict>
 			<key>primary</key>
 			<true/>
 		</dict>
 		<key>AD370E20F1C747178DB6B524</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
+		<key>B5DB076C6FCF45B3BE11F259</key>
 		<dict>
 			<key>primary</key>
 			<true/>

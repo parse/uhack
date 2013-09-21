@@ -5,6 +5,6 @@
 @interface Travel : NSObject
 
 @property (strong, nonatomic) NSArray *zones;
-@property (nonatomic, assign) NSDouble *price;
+@property (nonatomic, assign) NSNumber *price;
 
 @end

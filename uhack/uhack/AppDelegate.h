@@ -12,4 +12,7 @@
 
 @property (strong, nonatomic) UIWindow *window;
 
+#define myAppDelegate (AppDelegate *)[[UIApplication sharedApplication] delegate]
+#define API_VERSION "1.0"
+
 @end

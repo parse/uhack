@@ -2,4 +2,5 @@ platform :ios, '7.0'
 pod 'JSONKit'
 pod 'Reachability'
 pod 'RestKit', '~> 0.20.0'
-pod "GoogleAnalytics-iOS-SDK"
+pod 'GoogleAnalytics-iOS-SDK'
+pod 'FlatUIKit'

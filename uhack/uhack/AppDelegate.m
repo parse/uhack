@@ -11,6 +11,7 @@
 #import "AFNetworking.h"
 #import "Travel.h"
 #import "Location.h"
+#import "GAI.h"
 
 static NSString *const BaseURLString = @"http://valtechuh.apphb.com";
 
@@ -18,6 +19,15 @@ static NSString *const BaseURLString = @"http://valtechuh.apphb.com";
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
+    
+    // Optional: automatically send uncaught exceptions to Google Analytics.
+    [GAI sharedInstance].trackUncaughtExceptions = YES;
+    // Optional: set Google Analytics dispatch interval to e.g. 20 seconds.
+    [GAI sharedInstance].dispatchInterval = 0;
+
+    // Create tracker instance.
+    id<GAITracker> tracker = [[GAI sharedInstance] trackerWithTrackingId:@"UA-44229115-1"];
+
     // Override point for customization after application launch.
     
     RKLogConfigureByName("RestKit/Network", RKLogLevelTrace);

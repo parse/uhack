@@ -7,7 +7,12 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "FUIButton.h"
+
 
 @interface ViewController : UIViewController
+
+@property (nonatomic, retain) IBOutlet FUIButton *submitButton;
+@property (nonatomic, retain) IBOutlet UITextView *
 
 @end
