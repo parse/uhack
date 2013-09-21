@@ -13,6 +13,7 @@
 #import "FUIButton.h"
 #import "UIFont+FlatUI.h"
 #import  "QuartzCore/QuartzCore.h"
+#import <RestKit/RestKit.h>
 
 @interface ViewController ()
 
@@ -31,6 +32,8 @@
     [self initTextFields];
     [self initTableView];
     
+    //[self loadResults];
+
     autocomplete_array = [[NSMutableArray alloc] init];
 }
 
@@ -135,27 +138,25 @@
 }
 
 
-/*
-
 - (void)loadResults
 {
-    NSDictionary *params = @{@"version" : @API_VERSION,
-                             @"action" : @"getcategory",
-                             @"id": [NSNumber numberWithInteger:_query]};
+    NSString *url = @"/api/station";
+    NSString *query = [[NSString alloc] initWithFormat:@"järla?%@", @"format=json"];
+    url = [url stringByAppendingString:query];
     
     RKObjectManager *objectManager = [RKObjectManager sharedManager];
-    [objectManager getObjectsAtPath:@"/api/locations"
-                         parameters:params
+    [objectManager getObjectsAtPath:url
+                         parameters:nil
                             success:^(RKObjectRequestOperation *operation, RKMappingResult *mappingResult) {
- 
+                                
                                 NSArray* questions = [mappingResult array];
-                                _tableData = questions;
+                               // _tableData = questions;
                                 
-                                [indicator stopAnimating];
+                                //[indicator stopAnimating];
                                 
-                                if(self.isViewLoaded) {
-                                    [_tableView reloadData];
-                                }
+                                //if(self.isViewLoaded) {
+                                 //   [_tableView reloadData];
+                                //}
                             }
                             failure:^(RKObjectRequestOperation *operation, NSError *error) {
                                 UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Error"
@@ -167,7 +168,7 @@
                                 NSLog(@"Hit error: %@", error);
                             }];
 }
-*/
+
 
 - (void)didReceiveMemoryWarning
 {

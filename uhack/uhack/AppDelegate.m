@@ -47,24 +47,24 @@ static NSString *const BaseURLString = @"http://valtechuh.apphb.com";
     // Travel
     RKObjectMapping *travelMapping = [RKObjectMapping mappingForClass:[Travel class]];
     [travelMapping addAttributeMappingsFromDictionary:@{
-                                                          @"id" : @"id",
-                                                          @"name" : @"name"
+                                                          @"zones" : @"zones",
+                                                          @"price" : @"price"
                                                           }];
     RKResponseDescriptor *responseDescriptor = [RKResponseDescriptor responseDescriptorWithMapping:travelMapping
                                                                                         pathPattern:nil
-                                                                                            keyPath:@"travel"
+                                                                                            keyPath:@"items"
                                                                                         statusCodes:RKStatusCodeIndexSetForClass(RKStatusCodeClassSuccessful)];
     [objectManager addResponseDescriptor:responseDescriptor];
     
     // Locations
-    RKObjectMapping *locationMapping = [RKObjectMapping mappingForClass:[Travel class]];
+    RKObjectMapping *locationMapping = [RKObjectMapping mappingForClass:[Location class]];
     [locationMapping addAttributeMappingsFromDictionary:@{
-                                                        @"zones" : @"zones",
-                                                        @"price" : @"price"
+                                                        @"id" : @"id",
+                                                        @"name" : @"name"
                                                         }];
     responseDescriptor = [RKResponseDescriptor responseDescriptorWithMapping:locationMapping
                                                                                        pathPattern:nil
-                                                                                           keyPath:@"location"
+                                                                                           keyPath:@"results"
                                                                                        statusCodes:RKStatusCodeIndexSetForClass(RKStatusCodeClassSuccessful)];
     [objectManager addResponseDescriptor:responseDescriptor];
 
