@@ -37,6 +37,7 @@
     Travel *currentTravel;
     CGFloat priceOriginalY, logoOriginalY, travelerTypeOriginalY, fromOriginalY, toOriginalY, submitOriginalY;
     NSString *currentTravelerType;
+    MFMessageComposeViewController *messageController;
 }
 
 #define UPOFFSET 84
@@ -331,12 +332,12 @@
 
 - (IBAction) submitPressed:(id)sender {
     if (calculate == NO) {
-        MFMessageComposeViewController *controller = [[MFMessageComposeViewController alloc] init];
+        messageController = [[MFMessageComposeViewController alloc] init];
         if ([MFMessageComposeViewController canSendText]) {
-            controller.body = self->currentTravel.msgText;
-            controller.recipients = [NSArray arrayWithObjects:self->currentTravel.msgNumber, nil];
-            controller.messageComposeDelegate = self;
-            [self presentModalViewController:controller animated:YES];
+            messageController.body = self->currentTravel.msgText;
+            messageController.recipients = [NSArray arrayWithObjects:self->currentTravel.msgNumber, nil];
+            messageController.messageComposeDelegate = self;
+            [self presentModalViewController:messageController animated:YES];
         }
 
         return;
@@ -431,12 +432,11 @@
     UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:@"SearchResultsIdentifier"];
     
     if (cell == nil) {
-        cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleSubtitle reuseIdentifier:@"SearchResultsIdentifier"];
+        cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:@"SearchResultsIdentifier"];
     }
     
     Location *loc = [autocomplete_array objectAtIndex:indexPath.row];
     cell.textLabel.text = loc.name;
-    cell.detailTextLabel.text = @"Något annat";
     
     return cell;
 }
@@ -467,11 +467,36 @@
     }
 }
 
+- (void)messageComposeViewController:(MFMessageComposeViewController *)controller didFinishWithResult:(MessageComposeResult)result
+{
+    NSString *event_info = @"";
+    // Notifies users about errors associated with the interface
+    switch (result)
+    {
+        case MessageComposeResultCancelled:
+            event_info = @"SMS_CANCELED";
+            break;
+        case MessageComposeResultSent:
+            event_info = @"SMS_SENT";
+            break;
+        case MessageComposeResultFailed:
+            event_info = @"SMS_FAILED";
+            break;
+        default:
+            event_info = @"SMS_UNKNOWN";
+            break;
+    }
+    
+    //hide mail composer
+    [messageController dismissModalViewControllerAnimated:YES];
+    [self switchedTravelerType:nil];
+}
+
 - (IBAction)switchedTravelerType:(id)sender
 {
     calculate = YES;
     self.submitButton.titleLabel.text = @"Räkna pris";
-    currentTravelerType = self.travelerTypeControl.selectedSegmentIndex == 0 ? @"SLH" : @"SLR";
+    currentTravelerType = self.travelerTypeControl.selectedSegmentIndex == 0 ? @"H" : @"R";
 }
 
 @end

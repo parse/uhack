@@ -11,7 +11,7 @@
 #import "FUISwitch.h"
 #import "FUIAlertView.h"
 
-@interface ViewController : UIViewController <UITextFieldDelegate, UITableViewDataSource, UITableViewDelegate, FUIAlertViewDelegate, UIGestureRecognizerDelegate>
+@interface ViewController : UIViewController <UITextFieldDelegate, UITableViewDataSource, UITableViewDelegate, FUIAlertViewDelegate, UIGestureRecognizerDelegate, MFMessageComposeViewControllerDelegate>
 
 @property (nonatomic, retain) IBOutlet UIView *logoView;
 @property (nonatomic, retain) IBOutlet UISegmentedControl *travelerTypeControl;
