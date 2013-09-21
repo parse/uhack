@@ -2,6 +2,6 @@
 
 @implementation Travel
 
-@synthesize zones, price;
+@synthesize msgNumber, msgText, price;
 
 @end

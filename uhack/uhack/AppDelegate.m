@@ -46,12 +46,13 @@
     // Travel
     RKObjectMapping *travelMapping = [RKObjectMapping mappingForClass:[Travel class]];
     [travelMapping addAttributeMappingsFromDictionary:@{
-                                                          @"zones" : @"zones",
+                                                          @"msgText" : @"msgText",
+                                                          @"msgNumber" : @"msgNumber",
                                                           @"price" : @"price"
                                                           }];
     RKResponseDescriptor *responseDescriptor = [RKResponseDescriptor responseDescriptorWithMapping:travelMapping
                                                                                         pathPattern:nil
-                                                                                            keyPath:@"items"
+                                                                                            keyPath:nil
                                                                                         statusCodes:RKStatusCodeIndexSetForClass(RKStatusCodeClassSuccessful)];
     [objectManager addResponseDescriptor:responseDescriptor];
     

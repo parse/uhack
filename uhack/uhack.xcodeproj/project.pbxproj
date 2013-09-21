@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		9A2CBF7A17EDD189001687B5 /* MessageUI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9A2CBF7917EDD189001687B5 /* MessageUI.framework */; };
 		9AB3239217ED7C9C0016072D /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9AB3239117ED7C9C0016072D /* UIKit.framework */; };
 		9AB3239417ED7C9C0016072D /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9AB3239317ED7C9C0016072D /* Foundation.framework */; };
 		9AB3239617ED7C9C0016072D /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9AB3239517ED7C9C0016072D /* CoreGraphics.framework */; };
@@ -30,6 +31,7 @@
 
 /* Begin PBXFileReference section */
 		71A1D9D2144F40B29D99B12C /* Pods.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.xcconfig; path = Pods/Pods.xcconfig; sourceTree = "<group>"; };
+		9A2CBF7917EDD189001687B5 /* MessageUI.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MessageUI.framework; path = System/Library/Frameworks/MessageUI.framework; sourceTree = SDKROOT; };
 		9AB3238E17ED7C9C0016072D /* uhack.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = uhack.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		9AB3239117ED7C9C0016072D /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = System/Library/Frameworks/UIKit.framework; sourceTree = SDKROOT; };
 		9AB3239317ED7C9C0016072D /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
@@ -63,6 +65,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				9A2CBF7A17EDD189001687B5 /* MessageUI.framework in Frameworks */,
 				9ABE961617ED9A06007215A0 /* AdSupport.framework in Frameworks */,
 				9ABE961417ED99FA007215A0 /* SystemConfiguration.framework in Frameworks */,
 				9ABE961217ED99F3007215A0 /* CoreData.framework in Frameworks */,
@@ -97,6 +100,7 @@
 		9AB3239017ED7C9C0016072D /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				9A2CBF7917EDD189001687B5 /* MessageUI.framework */,
 				9ABE961517ED9A06007215A0 /* AdSupport.framework */,
 				9ABE961317ED99FA007215A0 /* SystemConfiguration.framework */,
 				9ABE961117ED99F3007215A0 /* CoreData.framework */,

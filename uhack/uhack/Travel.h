@@ -4,7 +4,8 @@
 
 @interface Travel : NSObject
 
-@property (strong, nonatomic) NSArray *zones;
 @property (nonatomic, assign) NSNumber *price;
+@property (strong, nonatomic) NSString *msgText;
+@property (strong, nonatomic) NSString *msgNumber;
 
 @end

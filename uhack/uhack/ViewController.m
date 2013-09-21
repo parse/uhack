@@ -6,6 +6,9 @@
 //  Copyright (c) 2013 Anders. All rights reserved.
 //
 
+#import <MessageUI/MessageUI.h>
+#import <MessageUI/MFMessageComposeViewController.h>
+
 #import "ViewController.h"
 #import <FlatUIKit/UIColor+FlatUI.h>
 #import "AppDelegate.h"
@@ -16,6 +19,7 @@
 #import  "QuartzCore/QuartzCore.h"
 #import <RestKit/RestKit.h>
 #import "Location.h"
+#import "Travel.h"
 
 @interface ViewController ()
 
@@ -213,6 +217,52 @@
     self.submitButton.cornerRadius = 0.0f;
     [self.submitButton setTitleColor:[UIColor cloudsColor] forState:UIControlStateNormal];
     [self.submitButton setTitleColor:[UIColor cloudsColor] forState:UIControlStateHighlighted];
+    
+    [self.submitButton addTarget:self action:@selector(submitPressed:) forControlEvents:UIControlEventTouchUpInside];
+}
+
+- (IBAction) submitPressed:(id)sender {
+    // @TODO Generate sms
+    NSInteger from = 9509;
+    NSInteger to = 9302;
+    
+    NSString *query = [[NSString alloc] initWithFormat:@"/api/ticketinfo/%d/%d/%@", from, to, @"SLH"];
+    NSString *url = [[NSString alloc] initWithFormat:@"%@?%@", query, @"format=json"];
+    
+    RKObjectManager *objectManager = [RKObjectManager sharedManager];
+    [objectManager cancelAllObjectRequestOperationsWithMethod:RKRequestMethodGET matchingPathPattern:url];
+    
+    [objectManager getObjectsAtPath:url
+                         parameters:nil
+                            success:^(RKObjectRequestOperation *operation, RKMappingResult *mappingResult) {
+                                NSLog(@"Array: %@",[mappingResult array]);
+                                Travel *info = [[mappingResult array] objectAtIndex:0];
+                                
+                                MFMessageComposeViewController *controller = [[MFMessageComposeViewController alloc] init];
+                                if ([MFMessageComposeViewController canSendText]) {
+                                    controller.body = info.msgText;
+                                    controller.recipients = [NSArray arrayWithObjects:info.msgNumber, nil];
+                                    controller.messageComposeDelegate = self;
+                                    [self presentModalViewController:controller animated:YES];
+                                }
+                            }
+                            failure:^(RKObjectRequestOperation *operation, NSError *error) {
+                                FUIAlertView *alertView = [[FUIAlertView alloc] initWithTitle:@"Fel"
+                                                                                      message:[error localizedDescription]
+                                                                                     delegate:nil cancelButtonTitle:nil
+                                                                            otherButtonTitles:@"Ok", nil];
+                                alertView.titleLabel.textColor = [UIColor cloudsColor];
+                                alertView.titleLabel.font = [UIFont boldFlatFontOfSize:16];
+                                alertView.messageLabel.textColor = [UIColor cloudsColor];
+                                alertView.messageLabel.font = [UIFont flatFontOfSize:14];
+                                alertView.backgroundOverlay.backgroundColor = [[UIColor cloudsColor] colorWithAlphaComponent:0.8];
+                                alertView.alertContainer.backgroundColor = [UIColor midnightBlueColor];
+                                alertView.defaultButtonColor = [UIColor cloudsColor];
+                                alertView.defaultButtonShadowColor = [UIColor asbestosColor];
+                                alertView.defaultButtonFont = [UIFont boldFlatFontOfSize:16];
+                                alertView.defaultButtonTitleColor = [UIColor asbestosColor];
+                                [alertView show];
+                            }];
 }
 
 - (void)touchesBegan:(NSSet *)touches withEvent:(UIEvent *)event {
