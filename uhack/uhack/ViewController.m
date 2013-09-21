@@ -14,21 +14,22 @@
 #import "UIFont+FlatUI.h"
 #import  "QuartzCore/QuartzCore.h"
 #import <RestKit/RestKit.h>
+#import "Location.h"
 
 @interface ViewController ()
 
 @end
 
 @implementation ViewController {
+    NSMutableArray *org_array;
     NSMutableArray *autocomplete_array;
 }
 
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-    
-    [self loadResults];
 
+    org_array = [[NSMutableArray alloc] init];
     autocomplete_array = [[NSMutableArray alloc] init];
 }
 
@@ -61,27 +62,6 @@
     self.searchResults.layer.borderColor = [[UIColor colorWithWhite:.5 alpha:.5] CGColor];
     self.toTextView.layer.borderWidth = 1.0;
     self.searchResults.layer.borderColor = [[UIColor colorWithWhite:.5 alpha:.5] CGColor];
-}
-
-- (void)searchAutocompleteEntriesWithSubstring:(NSString *)substring
-{
-    NSArray *dataSource = [NSArray arrayWithObjects:@"anders", @"uppsal", @"hackathon", @"daniel", @"sandra",nil];
-    
-    // Empty result data view
-    [autocomplete_array removeAllObjects];
-    
-    for(int i = 0; i < [dataSource count]; i++) {
-        NSString *curString = [dataSource objectAtIndex:i];
-        
-        curString = [curString lowercaseString];
-        substring = [substring lowercaseString];
-        
-        if ([curString rangeOfString:substring].location != NSNotFound) {
-            [autocomplete_array addObject:curString];
-        }
-    }
-    
-    [self.searchResults reloadData];
 }
 
 - (void) initTapRecognizers
@@ -180,10 +160,38 @@
 }
 
 - (BOOL)textField:(UITextField *)textField shouldChangeCharactersInRange:(NSRange)range replacementString:(NSString *)string {
+    [autocomplete_array removeAllObjects];
+    [self.searchResults reloadData];
+    
     NSString *substring = [NSString stringWithString:textField.text];
     substring = [substring stringByReplacingCharactersInRange:range withString:string];
-    [self searchAutocompleteEntriesWithSubstring:substring];
     
+    NSString *url = @"/api/station/";
+    NSString *query = [[NSString alloc] initWithFormat:@"%@?%@", substring, @"format=json"];
+    url = [url stringByAppendingString:query];
+    
+    RKObjectManager *objectManager = [RKObjectManager sharedManager];
+    [objectManager cancelAllObjectRequestOperationsWithMethod:RKRequestMethodGET matchingPathPattern:url];
+    
+    NSUInteger newLength = [textField.text length] + [string length] - range.length;
+    if (newLength < 3) {
+        return YES;
+    }
+    
+    [objectManager getObjectsAtPath:url
+                         parameters:nil
+                            success:^(RKObjectRequestOperation *operation, RKMappingResult *mappingResult) {
+                                autocomplete_array = [NSMutableArray arrayWithArray:[mappingResult array]];
+                                [self.searchResults reloadData];
+                            }
+                            failure:^(RKObjectRequestOperation *operation, NSError *error) {
+                                 UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Fel"
+                                 message:[error localizedDescription]
+                                 delegate:nil
+                                 cancelButtonTitle:@"OK"
+                                 otherButtonTitles:nil];
+                                 [alert show];
+                            }];
     return YES;
 }
 
@@ -198,7 +206,6 @@
 }
 
 - (void)touchesBegan:(NSSet *)touches withEvent:(UIEvent *)event {
-    NSLog(@"Hej hej");
     UITouch *touch = [[event allTouches] anyObject];
     if ([self.fromTextView isFirstResponder] && [touch view] != self.fromTextView) {
         [self.fromTextView resignFirstResponder];
@@ -208,39 +215,6 @@
     
     [super touchesBegan:touches withEvent:event];
 }
-
-
-- (void)loadResults
-{
-    NSString *url = @"/api/station/";
-    NSString *query = [[NSString alloc] initWithFormat:@"sund?%@", @"format=json"];
-    url = [url stringByAppendingString:query];
-    RKObjectManager *objectManager = [RKObjectManager sharedManager];
-    [objectManager getObjectsAtPath:url
-                         parameters:nil
-                            success:^(RKObjectRequestOperation *operation, RKMappingResult *mappingResult) {
-                                
-                                //NSArray *questions = [mappingResult array];
-                               // _tableData = questions;
-                                
-                                //[indicator stopAnimating];
-                                
-                                //if(self.isViewLoaded) {
-                                 //   [_tableView reloadData];
-                                //}
-                            }
-                            failure:^(RKObjectRequestOperation *operation, NSError *error) {
-                                /*
-                                UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Error"
-                                                                                message:[error localizedDescription]
-                                                                               delegate:nil
-                                                                      cancelButtonTitle:@"OK"
-                                                                      otherButtonTitles:nil];
-                                [alert show];*/
-                                NSLog(@"Hit error: %@", error);
-                            }];
-}
-
 
 - (void)didReceiveMemoryWarning
 {
@@ -264,12 +238,12 @@
     UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:@"SearchResultsIdentifier"];
     
     if (cell == nil) {
-        
         cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleSubtitle reuseIdentifier:@"SearchResultsIdentifier"];
         cell.selectionStyle = UITableViewCellSelectionStyleNone;
     }
     
-    cell.textLabel.text = [autocomplete_array objectAtIndex:indexPath.row];
+    Location *loc = [autocomplete_array objectAtIndex:indexPath.row];
+    cell.textLabel.text = loc.name;
     cell.detailTextLabel.text = @"Något annat";
     
     return cell;
