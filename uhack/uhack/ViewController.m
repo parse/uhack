@@ -23,11 +23,15 @@
 
 @interface ViewController ()
 
+@property (nonatomic, retain) Location *fromLocation;
+@property (nonatomic, retain) Location *toLocation;
+
 @end
 
 @implementation ViewController {
     NSMutableArray *org_array;
     NSMutableArray *autocomplete_array;
+    UITextField *currentFirstResponder;
 }
 
 - (void)viewDidLoad
@@ -74,8 +78,18 @@
     UITapGestureRecognizer *tap = [[UITapGestureRecognizer alloc]
                                    initWithTarget:self
                                    action:@selector(dismissKeyboard)];
-    
+    tap.delegate = self;
     [self.view addGestureRecognizer:tap];
+}
+
+- (BOOL)gestureRecognizer:(UIGestureRecognizer *)gestureRecognizer shouldReceiveTouch:(UITouch *)touch {
+    if (self.searchResults.superview != nil) {
+        if ([touch.view isDescendantOfView:self.searchResults]) {
+            // we touched the search view
+            return NO; // ignore the touch
+        }
+    }
+    return YES; // handle the touch
 }
 
 -(void)dismissKeyboard {
@@ -90,12 +104,15 @@
     {
         [textField resignFirstResponder];
     }
-    return NO;
+    return YES;
 }
 
 - (void)textFieldDidBeginEditing:(UITextField *)textField
 {
-    [UIView animateWithDuration:0.3 animations:^{
+    currentFirstResponder = textField;
+    
+    [UIView animateWithDuration:0.3
+        animations:^{
         CGRect logoFrame = self.logoView.frame;
         self.logoView.frame = CGRectify(logoFrame, -1, logoFrame.origin.y - 100, -1, -1);
         
@@ -115,7 +132,6 @@
         self.submitButton.frame = CGRectify(buttonFrame, -1, buttonFrame.origin.y + 50, -1, -1);
     } completion:^(BOOL finished) {
         self.searchResults.alpha = 0;
-        self.searchResults.hidden = NO;
         
         int y = 0;
         if (textField == self.toTextView)
@@ -138,10 +154,13 @@
 
 - (void)textFieldDidEndEditing:(UITextField *)textField
 {
-    [UIView animateWithDuration:0.2 animations:^{
+    if (self.searchResults.isFirstResponder)
+        debugLog(@"TableView");
+    [UIView animateWithDuration:0.2 delay:0.1 options:UIViewAnimationOptionCurveEaseInOut
+    animations:^{
         self.searchResults.alpha = 0;
     } completion:^(BOOL finished) {
-        self.searchResults.hidden = YES;
+        //self.searchResults.hidden = YES;
         [UIView animateWithDuration:0.3 animations:^{
             CGRect logoFrame = self.logoView.frame;
             self.logoView.frame = CGRectify(logoFrame, -1, logoFrame.origin.y + 100, -1, -1);
@@ -299,7 +318,6 @@
     
     if (cell == nil) {
         cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleSubtitle reuseIdentifier:@"SearchResultsIdentifier"];
-        cell.selectionStyle = UITableViewCellSelectionStyleNone;
     }
     
     Location *loc = [autocomplete_array objectAtIndex:indexPath.row];
@@ -307,6 +325,19 @@
     cell.detailTextLabel.text = @"Något annat";
     
     return cell;
+}
+
+- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    if (currentFirstResponder == self.fromTextView) {
+        self.fromLocation = [autocomplete_array objectAtIndex:indexPath.row];
+        self.fromTextView.text = self.fromLocation.name;
+    }
+    else if (currentFirstResponder == self.toTextView) {
+        self.toLocation = [autocomplete_array objectAtIndex:indexPath.row];
+        self.toTextView.text = self.toLocation.name;
+    }
+    [self dismissKeyboard];
 }
 
 @end
