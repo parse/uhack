@@ -12,3 +12,9 @@
     #import <UIKit/UIKit.h>
     #import <Foundation/Foundation.h>
 #endif
+
+#ifdef DEBUG
+#define debugLog(s, ...) NSLog(s, ##__VA_ARGS__)
+#else
+#define debugLog(s, ...)
+#endif

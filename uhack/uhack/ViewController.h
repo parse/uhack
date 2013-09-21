@@ -10,10 +10,14 @@
 #import "FUIButton.h"
 
 
-@interface ViewController : UIViewController <UITextFieldDelegate>
+@interface ViewController : UIViewController <UITextFieldDelegate, UITableViewDataSource, UITableViewDelegate>
 
 @property (nonatomic, retain) IBOutlet FUIButton *submitButton;
-@property (nonatomic, retain) IBOutlet UITextView *fromTextView;
-@property (nonatomic, retain) IBOutlet UITextView *toTextView;
+@property (nonatomic, retain) IBOutlet UITextField *fromTextView;
+@property (nonatomic, retain) IBOutlet UITextField *toTextView;
+@property (nonatomic, retain) IBOutlet UITableView *searchResults;
+
+- (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section;
+- (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath;
 
 @end

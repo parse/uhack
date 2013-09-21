@@ -12,6 +12,7 @@
 #import "UIColor+FlatUI.h"
 #import "FUIButton.h"
 #import "UIFont+FlatUI.h"
+#import  "QuartzCore/QuartzCore.h"
 
 @interface ViewController ()
 
@@ -25,9 +26,26 @@
 {
     [super viewDidLoad];
 	
+    [self initTapRecognizers];
     [self initSubmitButton];
+    [self initTextFields];
+    [self initTableView];
     
     autocomplete_array = [[NSMutableArray alloc] init];
+}
+
+- (void)initTableView
+{
+    self.searchResults.layer.borderWidth = 1.0;
+    self.searchResults.layer.borderColor = [[UIColor colorWithWhite:.5 alpha:.5] CGColor];
+}
+
+- (void)initTextFields
+{
+    self.fromTextView.layer.borderWidth = 1.0;
+    self.fromTextView.layer.borderColor = [[UIColor turquoiseColor] CGColor];
+    self.toTextView.layer.borderWidth = 1.0;
+    self.toTextView.layer.borderColor = [[UIColor turquoiseColor] CGColor];
 }
 
 - (void)searchAutocompleteEntriesWithSubstring:(NSString *)substring
@@ -47,10 +65,43 @@
             [autocomplete_array addObject:curString];
         }
     }
+    [self.searchResults reloadData];
+}
+
+- (void) initTapRecognizers
+{
+    UITapGestureRecognizer *tap = [[UITapGestureRecognizer alloc]
+                                   initWithTarget:self
+                                   action:@selector(dismissKeyboard)];
     
-    NSLog(@"Autocomplete: %@", autocomplete_array);
+    [self.view addGestureRecognizer:tap];
+}
+
+-(void)dismissKeyboard {
+    [self.view endEditing:YES];
+}
+
+- (BOOL)textFieldShouldReturn:(UITextField *)textField {
+    if (textField == self.fromTextView) {
+        [self.toTextView becomeFirstResponder];
+    }
+    else if (textField == self.toTextView)
+    {
+        [textField resignFirstResponder];
+    }
+    return NO;
+}
+
+- (void)textFieldDidBeginEditing:(UITextField *)textField
+{
+    [UIView animateWithDuration:0.3 animations:^{  // animate the following:
+        
+    }];
+}
+
+- (void)textFieldDidEndEditing:(UITextField *)textField
+{
     
-    // Reload result data view
 }
 
 - (BOOL)textField:(UITextField *)textField shouldChangeCharactersInRange:(NSRange)range replacementString:(NSString *)string {
@@ -122,6 +173,33 @@
 {
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.
+}
+
+#pragma mark Table View delegate
+- (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
+{
+    return autocomplete_array.count;
+}
+
+- (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
+{
+    return 1;
+}
+
+- (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:@"SearchResultsIdentifier"];
+    
+    if (cell == nil) {
+        
+        cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleSubtitle reuseIdentifier:@"SearchResultsIdentifier"];
+        cell.selectionStyle = UITableViewCellSelectionStyleNone;
+    }
+    
+    cell.textLabel.text = [autocomplete_array objectAtIndex:indexPath.row];
+    cell.detailTextLabel.text = @"Något annat";
+    
+    return cell;
 }
 
 @end
