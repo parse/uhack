@@ -209,15 +209,14 @@
 - (void)loadResults
 {
     NSString *url = @"/api/station/";
-    NSString *query = [[NSString alloc] initWithFormat:@"järla?%@", @"format=json"];
+    NSString *query = [[NSString alloc] initWithFormat:@"sund?%@", @"format=json"];
     url = [url stringByAppendingString:query];
-
     RKObjectManager *objectManager = [RKObjectManager sharedManager];
     [objectManager getObjectsAtPath:url
                          parameters:nil
                             success:^(RKObjectRequestOperation *operation, RKMappingResult *mappingResult) {
                                 
-                                NSArray* questions = [mappingResult array];
+                                //NSArray *questions = [mappingResult array];
                                // _tableData = questions;
                                 
                                 //[indicator stopAnimating];
@@ -227,12 +226,13 @@
                                 //}
                             }
                             failure:^(RKObjectRequestOperation *operation, NSError *error) {
+                                /*
                                 UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Error"
                                                                                 message:[error localizedDescription]
                                                                                delegate:nil
                                                                       cancelButtonTitle:@"OK"
                                                                       otherButtonTitles:nil];
-                                [alert show];
+                                [alert show];*/
                                 NSLog(@"Hit error: %@", error);
                             }];
 }

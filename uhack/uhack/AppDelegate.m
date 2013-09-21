@@ -13,8 +13,6 @@
 #import "Location.h"
 #import "GAI.h"
 
-static NSString *const BaseURLString = @"http://valtechuh.apphb.com";
-
 @implementation AppDelegate
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
@@ -36,13 +34,14 @@ static NSString *const BaseURLString = @"http://valtechuh.apphb.com";
     [AFNetworkActivityIndicatorManager sharedManager].enabled = YES;
 
     // Initialize HTTPClient
-    NSURL *baseURL = [NSURL URLWithString:BaseURLString];
+    NSURL *baseURL = [NSURL URLWithString:@"http://valtechuh.apphb.com"];
     
     AFHTTPClient* client = [[AFHTTPClient alloc] initWithBaseURL:baseURL];
     //we want to work with JSON-Data
     [client setDefaultHeader:@"Accept" value:RKMIMETypeJSON];
     
     RKObjectManager *objectManager = [[RKObjectManager alloc] initWithHTTPClient:client];
+    [RKObjectManager setSharedManager:objectManager];
     
     // Travel
     RKObjectMapping *travelMapping = [RKObjectMapping mappingForClass:[Travel class]];
@@ -59,12 +58,12 @@ static NSString *const BaseURLString = @"http://valtechuh.apphb.com";
     // Locations
     RKObjectMapping *locationMapping = [RKObjectMapping mappingForClass:[Location class]];
     [locationMapping addAttributeMappingsFromDictionary:@{
-                                                        @"id" : @"id",
+                                                        @"id" : @"ID",
                                                         @"name" : @"name"
                                                         }];
     responseDescriptor = [RKResponseDescriptor responseDescriptorWithMapping:locationMapping
                                                                                        pathPattern:nil
-                                                                                           keyPath:@"results"
+                                                                                           keyPath:@"result"
                                                                                        statusCodes:RKStatusCodeIndexSetForClass(RKStatusCodeClassSuccessful)];
     [objectManager addResponseDescriptor:responseDescriptor];
 
