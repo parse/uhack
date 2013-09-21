@@ -12,6 +12,7 @@
 #import "Travel.h"
 #import "Location.h"
 
+static NSString *const BaseURLString = @"http://valtechuh.apphb.com";
 
 @implementation AppDelegate
 
@@ -25,7 +26,8 @@
     [AFNetworkActivityIndicatorManager sharedManager].enabled = YES;
 
     // Initialize HTTPClient
-    NSURL *baseURL = [NSURL URLWithString:@"https://klarsprak.appanero.se"];
+    NSURL *baseURL = [NSURL URLWithString:BaseURLString];
+    
     AFHTTPClient* client = [[AFHTTPClient alloc] initWithBaseURL:baseURL];
     //we want to work with JSON-Data
     [client setDefaultHeader:@"Accept" value:RKMIMETypeJSON];

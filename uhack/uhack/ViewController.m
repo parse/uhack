@@ -8,7 +8,6 @@
 
 #import "ViewController.h"
 
-static NSString *const BaseURLString = @"http://valtechuh.apphb.com";
 
 
 @interface ViewController ()
