@@ -35,7 +35,11 @@
     UITextField *currentFirstResponder;
     BOOL calculate;
     Travel *currentTravel;
+    CGFloat priceOriginalY, logoOriginalY, fromOriginalY, toOriginalY, submitOriginalY;
 }
+
+#define UPOFFSET 84
+#define DOWNOFFSET 50
 
 - (void)viewDidLoad
 {
@@ -67,6 +71,12 @@
     [self initSubmitButton];
     [self initTextFields];
     [self initTableView];
+    
+    priceOriginalY = 0;
+    logoOriginalY = self.logoView.frame.origin.y;
+    fromOriginalY = self.fromTextView.frame.origin.y;
+    toOriginalY = self.toTextView.frame.origin.y;
+    submitOriginalY = self.submitButton.frame.origin.y;
 }
 
 - (void)initTextFields
@@ -93,22 +103,150 @@
             return NO; // ignore the touch
         }
     }
+    if (self.fromTextView.superview != nil) {
+        if ([touch.view isDescendantOfView:self.fromTextView]) {
+            // we touched the search view
+            [self expandFrom];
+            return NO; // ignore the touch
+        }
+    }
+    if (self.toTextView.superview != nil) {
+        if ([touch.view isDescendantOfView:self.toTextView]) {
+            // we touched the search view
+            [self expandTo];
+            return NO; // ignore the touch
+        }
+    }
     return YES; // handle the touch
 }
 
 -(void)dismissKeyboard {
     [self.view endEditing:YES];
+    [self closeFields];
 }
 
 - (BOOL)textFieldShouldReturn:(UITextField *)textField {
     if (textField == self.fromTextView) {
         [self.toTextView becomeFirstResponder];
+        [self expandToAfterClosingFrom];
     }
     else if (textField == self.toTextView)
     {
         [textField resignFirstResponder];
+        [self closeFields];
     }
     return YES;
+}
+
+- (void)expandFrom
+{
+    [self.view.layer removeAllAnimations];
+    [UIView animateWithDuration:0.3
+                     animations:^{
+                         CGRect logoFrame = self.logoView.frame;
+                         self.logoView.frame = CGRectify(logoFrame, -1, logoOriginalY - UPOFFSET, -1, -1);
+                         
+                         CGRect fromFrame = self.fromTextView.frame;
+                         self.fromTextView.frame = CGRectify(fromFrame, -1, fromOriginalY - UPOFFSET, -1, -1);
+                         
+                         CGRect toFrame = self.toTextView.frame;
+                         self.toTextView.frame = CGRectify(toFrame, -1, toOriginalY + DOWNOFFSET, -1, -1);
+                         
+                         CGRect buttonFrame = self.submitButton.frame;
+                         self.submitButton.frame = CGRectify(buttonFrame, -1, submitOriginalY + DOWNOFFSET, -1, -1);
+                     } completion:^(BOOL finished) {
+                         self.searchResults.alpha = 0;
+                         
+                         int y = fromOriginalY - UPOFFSET + 40;
+                         CGRect searchFrame = self.searchResults.frame;
+                         
+                         self.searchResults.frame = CGRectify(searchFrame, -1, y, -1, 0);
+                         [self.searchResults setNeedsDisplay];
+                         
+                         [UIView animateWithDuration:0.4 animations:^{
+                             self.searchResults.alpha = 1;
+                             
+                             CGFloat height = [self getTableViewHeight];
+                             self.searchResults.frame = CGRectify(searchFrame, -1, y, -1, height);
+                         }];
+                     }];
+}
+- (void)expandToAfterClosingFrom
+{
+    [self.view.layer removeAllAnimations];
+    [UIView animateWithDuration:0.2 delay:0.1 options:UIViewAnimationOptionCurveEaseInOut
+                     animations:^{
+                         self.searchResults.alpha = 0;
+                     } completion:^(BOOL finished) {
+                         [self expandTo];
+                     }];
+}
+- (void) expandFromAfterClosingTo
+{
+    [self.view.layer removeAllAnimations];
+    [UIView animateWithDuration:0.2 delay:0.1 options:UIViewAnimationOptionCurveEaseInOut
+                     animations:^{
+                         self.searchResults.alpha = 0;
+                     } completion:^(BOOL finished) {
+                         [self expandTo];
+                     }];
+}
+
+- (void)expandTo
+{
+    [self.view.layer removeAllAnimations];
+    [UIView animateWithDuration:0.3
+                     animations:^{
+                         CGRect logoFrame = self.logoView.frame;
+                         self.logoView.frame = CGRectify(logoFrame, -1, logoOriginalY - UPOFFSET, -1, -1);
+                         
+                         CGRect fromFrame = self.fromTextView.frame;
+                         self.fromTextView.frame = CGRectify(fromFrame, -1, fromOriginalY - UPOFFSET, -1, -1);
+                         
+                         CGRect toFrame = self.toTextView.frame;
+                         self.toTextView.frame = CGRectify(toFrame, -1, toOriginalY - UPOFFSET, -1, -1);
+                         
+                         CGRect buttonFrame = self.submitButton.frame;
+                         self.submitButton.frame = CGRectify(buttonFrame, -1, submitOriginalY + DOWNOFFSET, -1, -1);
+                     } completion:^(BOOL finished) {
+                         self.searchResults.alpha = 0;
+                         
+                         int y = toOriginalY - UPOFFSET + 40;
+                         CGRect searchFrame = self.searchResults.frame;
+                         
+                         self.searchResults.frame = CGRectify(searchFrame, -1, y, -1, 0);
+                         [self.searchResults setNeedsDisplay];
+                         
+                         [UIView animateWithDuration:0.4 animations:^{
+                             self.searchResults.alpha = 1;
+                             
+                             CGFloat height = [self getTableViewHeight];
+                             self.searchResults.frame = CGRectify(searchFrame, -1, y, -1, height);
+                         }];
+                     }];
+}
+- (void)closeFields
+{
+    [self.view.layer removeAllAnimations];
+    [UIView animateWithDuration:0.2 delay:0.1 options:UIViewAnimationOptionCurveEaseInOut
+                     animations:^{
+                         self.searchResults.alpha = 0;
+                     } completion:^(BOOL finished) {
+                         //self.searchResults.hidden = YES;
+                         [UIView animateWithDuration:0.3 animations:^{
+                             CGRect logoFrame = self.logoView.frame;
+                             self.logoView.frame = CGRectify(logoFrame, -1, logoOriginalY, -1, -1);
+                             
+                             CGRect fromFrame = self.fromTextView.frame;
+                             self.fromTextView.frame = CGRectify(fromFrame, -1, fromOriginalY, -1, -1);
+                             
+                             CGRect toFrame = self.toTextView.frame;
+                             self.toTextView.frame = CGRectify(toFrame, -1, toOriginalY, -1, -1);
+                             
+                             CGRect buttonFrame = self.submitButton.frame;
+                             self.submitButton.frame = CGRectify(buttonFrame, -1, submitOriginalY, -1, -1);
+                         }];
+                     }];
 }
 
 - (void)textFieldDidBeginEditing:(UITextField *)textField
@@ -119,77 +257,12 @@
     }
     
     currentFirstResponder = textField;
-    
-    [UIView animateWithDuration:0.3
-        animations:^{
-        CGRect logoFrame = self.logoView.frame;
-        self.logoView.frame = CGRectify(logoFrame, -1, logoFrame.origin.y - 100, -1, -1);
-        
-        CGRect fromFrame = self.fromTextView.frame;
-        self.fromTextView.frame = CGRectify(fromFrame, -1, fromFrame.origin.y - 100, -1, -1);
-        
-        int changeOffset = 0;
-        if (textField == self.toTextView)
-            changeOffset = -100;
-        else if (textField == self.fromTextView)
-            changeOffset = 50;
-        
-        CGRect toFrame = self.toTextView.frame;
-        self.toTextView.frame = CGRectify(toFrame, -1, toFrame.origin.y + changeOffset, -1, -1);
-        
-        CGRect buttonFrame = self.submitButton.frame;
-        self.submitButton.frame = CGRectify(buttonFrame, -1, buttonFrame.origin.y + 50, -1, -1);
-    } completion:^(BOOL finished) {
-        self.searchResults.alpha = 0;
-        
-        int y = 0;
-        if (textField == self.toTextView)
-            y = self.toTextView.frame.origin.y + 40;
-        else if (textField == self.fromTextView)
-            y = self.fromTextView.frame.origin.y + 40;
-        CGRect searchFrame = self.searchResults.frame;
-        
-        self.searchResults.frame = CGRectify(searchFrame, -1, y, -1, 0);
-        [self.searchResults setNeedsDisplay];
-        
-        [UIView animateWithDuration:0.4 animations:^{
-            self.searchResults.alpha = 1;
-            
-            CGFloat height = [self getTableViewHeight];
-            self.searchResults.frame = CGRectify(searchFrame, -1, y, -1, height);
-        }];
-    }];
+    [autocomplete_array removeAllObjects];
+    [self.searchResults reloadData];
 }
 
 - (void)textFieldDidEndEditing:(UITextField *)textField
 {
-    if (self.searchResults.isFirstResponder)
-        debugLog(@"TableView");
-    [UIView animateWithDuration:0.2 delay:0.1 options:UIViewAnimationOptionCurveEaseInOut
-    animations:^{
-        self.searchResults.alpha = 0;
-    } completion:^(BOOL finished) {
-        //self.searchResults.hidden = YES;
-        [UIView animateWithDuration:0.3 animations:^{
-            CGRect logoFrame = self.logoView.frame;
-            self.logoView.frame = CGRectify(logoFrame, -1, logoFrame.origin.y + 100, -1, -1);
-            
-            CGRect fromFrame = self.fromTextView.frame;
-            self.fromTextView.frame = CGRectify(fromFrame, -1, fromFrame.origin.y + 100, -1, -1);
-            
-            int changeOffset = 0;
-            if (textField == self.toTextView)
-                changeOffset = 100;
-            else if (textField == self.fromTextView)
-                changeOffset = -50;
-            
-            CGRect toFrame = self.toTextView.frame;
-            self.toTextView.frame = CGRectify(toFrame, -1, toFrame.origin.y + changeOffset, -1, -1);
-            
-            CGRect buttonFrame = self.submitButton.frame;
-            self.submitButton.frame = CGRectify(buttonFrame, -1, buttonFrame.origin.y - 50, -1, -1);
-        }];
-    }];
 }
 
 - (BOOL)textField:(UITextField *)textField shouldChangeCharactersInRange:(NSRange)range replacementString:(NSString *)string {
@@ -354,12 +427,25 @@
     if (currentFirstResponder == self.fromTextView) {
         self.fromLocation = [autocomplete_array objectAtIndex:indexPath.row];
         self.fromTextView.text = self.fromLocation.name;
+        if (self.toLocation == nil) {
+            [self expandToAfterClosingFrom];
+            [self.toTextView becomeFirstResponder];
+        }
+        else {
+            [self dismissKeyboard];
+        }
     }
     else if (currentFirstResponder == self.toTextView) {
         self.toLocation = [autocomplete_array objectAtIndex:indexPath.row];
         self.toTextView.text = self.toLocation.name;
+        if (self.fromLocation == nil) {
+            [self expandFromAfterClosingTo];
+            [self.fromTextView becomeFirstResponder];
+        }
+        else {
+            [self dismissKeyboard];
+        }
     }
-    [self dismissKeyboard];
 }
 
 @end
